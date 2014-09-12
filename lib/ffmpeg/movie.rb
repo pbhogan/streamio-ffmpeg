@@ -66,6 +66,14 @@ module FFMPEG
       not @invalid
     end
 
+    def video?
+      !@video_stream.to_s.empty?
+    end
+
+    def audio?
+      !video? && !@audio_stream.to_s.empty?
+    end
+
     def width
       resolution.split("x")[0].to_i rescue nil
     end
@@ -107,7 +115,9 @@ module FFMPEG
       Transcoder.new(self, output_file, options.merge(screenshot: true), transcoder_options).run &block
     end
 
+
     protected
+
     def aspect_from_dar
       return nil unless dar
       w, h = dar.split(":")
@@ -132,5 +142,6 @@ module FFMPEG
     rescue ArgumentError
       output.force_encoding("ISO-8859-1")
     end
+
   end
 end
