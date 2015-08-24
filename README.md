@@ -38,7 +38,7 @@ require 'streamio-ffmpeg'
 ### Reading Metadata
 
 ``` ruby
-movie = FFMPEG::Movie.new("path/to/movie.mov")
+movie = FFMPEG::MediaFile.new("path/to/movie.mov")
 
 movie.duration # 7.5 (duration of the movie in seconds)
 movie.bitrate # 481 (bitrate in kb/s)
@@ -92,7 +92,7 @@ options = {video_codec: "libx264", frame_rate: 10, resolution: "320x240", video_
 movie.transcode("movie.mp4", options)
 ```
 
-The transcode function returns a Movie object for the encoded file.
+The transcode function returns a MediaFile object for the encoded file.
 
 ``` ruby
 transcoded_movie = movie.transcode("tmp/movie.flv")
@@ -110,7 +110,7 @@ options = { resolution: "320x180" } # Will add -aspect 1.77777777777778 to ffmpe
 Preserve aspect ratio on width or height by using the preserve_aspect_ratio transcoder option.
 
 ``` ruby
-widescreen_movie = FFMPEG::Movie.new("path/to/widescreen_movie.mov")
+widescreen_movie = FFMPEG::MediaFile.new("path/to/widescreen_movie.mov")
 
 options = { resolution: "320x240" }
 

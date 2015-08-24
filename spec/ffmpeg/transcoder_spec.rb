@@ -2,7 +2,7 @@ require 'spec_helper.rb'
 
 module FFMPEG
   describe Transcoder do
-    let(:movie) { Movie.new("#{fixture_path}/movies/awesome movie.mov") }
+    let(:movie) { MediaFile.new("#{fixture_path}/movies/awesome movie.mov") }
 
     describe "initialization" do
       let(:output_path) { "#{tmp_path}/awesome.flv" }
@@ -96,7 +96,7 @@ module FFMPEG
 
         context "with aspect ratio preservation" do
           before do
-            @movie = Movie.new("#{fixture_path}/movies/awesome_widescreen.mov")
+            @movie = MediaFile.new("#{fixture_path}/movies/awesome_widescreen.mov")
             @options = {resolution: "320x240"}
           end
 
@@ -142,7 +142,7 @@ module FFMPEG
         it "should transcode the movie which name include single quotation mark" do
           FileUtils.rm_f "#{tmp_path}/output.flv"
 
-          movie = Movie.new("#{fixture_path}/movies/awesome'movie.mov")
+          movie = MediaFile.new("#{fixture_path}/movies/awesome'movie.mov")
 
           expect { Transcoder.new(movie, "#{tmp_path}/output.flv").run }.not_to raise_error
         end
@@ -157,7 +157,7 @@ module FFMPEG
 
         it "should fail when given an invalid movie" do
           FFMPEG.logger.should_receive(:error)
-          movie = Movie.new(__FILE__)
+          movie = MediaFile.new(__FILE__)
           transcoder = Transcoder.new(movie, "#{tmp_path}/fail.flv")
           expect { transcoder.run }.to raise_error(FFMPEG::Error, /no output file created/)
         end
@@ -220,7 +220,7 @@ module FFMPEG
         transcoder.run
       end
 
-      it "should not return Movie object" do
+      it "should not return MediaFile object" do
         transcoder.stub(:validate_output_file)
         transcoder.should_not_receive(:encoded)
         transcoder.run.should == nil

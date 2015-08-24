@@ -8,11 +8,11 @@ ffmpeg version 0.8.5, Copyright (c) 2000-2011 the FFmpeg developers
   libavfilter   2. 23. 0 /  2. 23. 0
   libswscale    2.  0. 0 /  2.  0. 0
   libpostproc  51.  2. 0 / 51.  2. 0
-Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/Users/druiden/Movies/clips/metal_gear-aspect-ratio-fail.mov':
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/Users/druiden/MediaFiles/clips/metal_gear-aspect-ratio-fail.mov':
   Metadata:
-    major_brand     : qt  
+    major_brand     : qt
     minor_version   : 537199360
-    compatible_brands: qt  
+    compatible_brands: qt
     creation_time   : 2011-05-31 01:47:42
   Duration: 00:02:40.63, start: 0.000000, bitrate: 17495 kb/s
     Stream #0.0(eng): Video: h264 (Main), yuv420p, 1280x720, 15955 kb/s, PAR 16777216:16777216 DAR 0:1, 30 fps, 30 tbr, 30 tbn, 60 tbc

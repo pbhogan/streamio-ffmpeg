@@ -5,13 +5,16 @@ module FFMPEG
   class Transcoder
     @@timeout = 30
 
+
     def self.timeout=(time)
       @@timeout = time
     end
 
+
     def self.timeout
       @@timeout
     end
+
 
     def initialize(movie, output_file, options = EncodingOptions.new, transcoder_options = {})
       @movie = movie
@@ -31,6 +34,7 @@ module FFMPEG
       apply_transcoder_options
     end
 
+
     def run(&block)
       transcode_movie(&block)
       if @transcoder_options[:validate]
@@ -41,15 +45,18 @@ module FFMPEG
       end
     end
 
+
     def encoding_succeeded?
       @errors << "no output file created" and return false unless File.exists?(@output_file)
       @errors << "encoded file is invalid" and return false unless encoded.valid?
       true
     end
 
+
     def encoded
-      @encoded ||= Movie.new(@output_file)
+      @encoded ||= MediaFile.new(@output_file)
     end
+
 
     private
     # frame= 4855 fps= 46 q=31.0 size=   45306kB time=00:02:42.28 bitrate=2287.0kbits/
@@ -88,6 +95,7 @@ module FFMPEG
       end
     end
 
+
     def validate_output_file(&block)
       if encoding_succeeded?
         yield(1.0) if block_given?
@@ -99,8 +107,8 @@ module FFMPEG
       end
     end
 
+
     def apply_transcoder_options
-       # if true runs #validate_output_file
       @transcoder_options[:validate] = @transcoder_options.fetch(:validate) { true }
 
       return if @movie.calculated_aspect_ratio.nil?
@@ -118,10 +126,17 @@ module FFMPEG
       end
     end
 
+
     def fix_encoding(output)
       output[/test/]
     rescue ArgumentError
       output.force_encoding("ISO-8859-1")
     end
+
   end
 end
+
+
+
+
+

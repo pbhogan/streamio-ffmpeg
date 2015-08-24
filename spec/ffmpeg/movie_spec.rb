@@ -1,17 +1,17 @@
 require 'spec_helper.rb'
 
 module FFMPEG
-  describe Movie do
+  describe MediaFile do
     describe "initializing" do
       context "given a non existing file" do
         it "should throw ArgumentError" do
-          expect { Movie.new("i_dont_exist") }.to raise_error(Errno::ENOENT, /does not exist/)
+          expect { MediaFile.new("i_dont_exist") }.to raise_error(Errno::ENOENT, /does not exist/)
         end
       end
 
       context "given a file containing a single quotation mark in the filename" do
         before(:all) do
-          @movie = Movie.new("#{fixture_path}/movies/awesome'movie.mov")
+          @movie = MediaFile.new("#{fixture_path}/movies/awesome'movie.mov")
         end
 
         it "should run ffmpeg successfully" do
@@ -22,7 +22,7 @@ module FFMPEG
 
       context "given a non movie file" do
         before(:all) do
-          @movie = Movie.new(__FILE__)
+          @movie = MediaFile.new(__FILE__)
         end
 
         it "should not be valid" do
@@ -48,7 +48,7 @@ module FFMPEG
 
       context "given an empty flv file (could not find codec parameters)" do
         before(:all) do
-          @movie = Movie.new("#{fixture_path}/movies/empty.flv")
+          @movie = MediaFile.new("#{fixture_path}/movies/empty.flv")
         end
 
         it "should not be valid" do
@@ -58,7 +58,7 @@ module FFMPEG
 
       context "given a broken mp4 file" do
         before(:all) do
-          @movie = Movie.new("#{fixture_path}/movies/broken.mp4")
+          @movie = MediaFile.new("#{fixture_path}/movies/broken.mp4")
         end
 
         it "should not be valid" do
@@ -72,7 +72,7 @@ module FFMPEG
 
       context "given a weird aspect ratio file" do
         before(:all) do
-          @movie = Movie.new("#{fixture_path}/movies/weird_aspect.small.mpg")
+          @movie = MediaFile.new("#{fixture_path}/movies/weird_aspect.small.mpg")
         end
 
         it "should parse the DAR" do
@@ -88,7 +88,7 @@ module FFMPEG
         before(:all) do
           fake_output = StringIO.new(File.read("#{fixture_path}/outputs/file_with_weird_dar.txt"))
           Open3.stub(:popen3).and_yield(nil,nil,fake_output)
-          @movie = Movie.new(__FILE__)
+          @movie = MediaFile.new(__FILE__)
         end
 
         it "should parse the DAR" do
@@ -102,7 +102,7 @@ module FFMPEG
 
       context "given a weird storage/pixel aspect ratio file" do
         before(:all) do
-          @movie = Movie.new("#{fixture_path}/movies/weird_aspect.small.mpg")
+          @movie = MediaFile.new("#{fixture_path}/movies/weird_aspect.small.mpg")
         end
 
         it "should parse the SAR" do
@@ -118,7 +118,7 @@ module FFMPEG
         before(:all) do
           fake_output = StringIO.new(File.read("#{fixture_path}/outputs/file_with_colorspace_with_parenthesis_but_no_comma.txt"))
           Open3.stub(:popen3).and_yield(nil,nil,fake_output)
-          @movie = Movie.new(__FILE__)
+          @movie = MediaFile.new(__FILE__)
         end
 
         it "should have correct video stream" do
@@ -130,7 +130,7 @@ module FFMPEG
         before(:all) do
           fake_output = StringIO.new(File.read("#{fixture_path}/outputs/file_with_weird_sar.txt"))
           Open3.stub(:popen3).and_yield(nil,nil,fake_output)
-          @movie = Movie.new(__FILE__)
+          @movie = MediaFile.new(__FILE__)
         end
 
         it "should parse the SAR" do
@@ -146,7 +146,7 @@ module FFMPEG
         it "should not crash" do
           fake_output = StringIO.new(File.read("#{fixture_path}/outputs/file_with_iso-8859-1.txt"))
           Open3.stub(:popen3).and_yield(nil, nil, fake_output)
-          expect { Movie.new(__FILE__) }.to_not raise_error
+          expect { MediaFile.new(__FILE__) }.to_not raise_error
         end
       end
 
@@ -154,7 +154,7 @@ module FFMPEG
         before(:all) do
           fake_output = StringIO.new(File.read("#{fixture_path}/outputs/file_with_surround_sound.txt"))
           Open3.stub(:popen3).and_yield(nil, nil, fake_output)
-          @movie = Movie.new(__FILE__)
+          @movie = MediaFile.new(__FILE__)
         end
 
         it "should have 6 audio channels" do
@@ -166,7 +166,7 @@ module FFMPEG
         before(:all) do
           fake_output = StringIO.new(File.read("#{fixture_path}/outputs/file_with_no_audio.txt"))
           Open3.stub(:popen3).and_yield(nil, nil, fake_output)
-          @movie = Movie.new(__FILE__)
+          @movie = MediaFile.new(__FILE__)
         end
 
         it "should have nil audio channels" do
@@ -178,7 +178,7 @@ module FFMPEG
         before(:all) do
           fake_output = StringIO.new(File.read("#{fixture_path}/outputs/file_with_non_supported_audio.txt"))
           Open3.stub(:popen3).and_yield(nil, nil, fake_output)
-          @movie = Movie.new(__FILE__)
+          @movie = MediaFile.new(__FILE__)
         end
 
         it "should not be valid" do
@@ -190,7 +190,7 @@ module FFMPEG
         before(:all) do
           fake_output = StringIO.new(File.read("#{fixture_path}/outputs/file_with_complex_colorspace_and_decimal_fps.txt"))
           Open3.stub(:popen3).and_yield(nil, nil, fake_output)
-          @movie = Movie.new(__FILE__)
+          @movie = MediaFile.new(__FILE__)
         end
 
         it "should know the framerate" do
@@ -209,7 +209,7 @@ module FFMPEG
 
       context "given an awesome movie file" do
         before(:all) do
-          @movie = Movie.new("#{fixture_path}/movies/awesome movie.mov")
+          @movie = MediaFile.new("#{fixture_path}/movies/awesome movie.mov")
         end
 
         it "should remember the movie path" do
@@ -301,7 +301,7 @@ module FFMPEG
 
     context "given a rotated movie file" do
       before(:all) do
-        @movie = Movie.new("#{fixture_path}/movies/sideways movie.mov")
+        @movie = MediaFile.new("#{fixture_path}/movies/sideways movie.mov")
       end
 
       it "should parse the rotation" do
@@ -311,7 +311,7 @@ module FFMPEG
 
     describe "transcode" do
       it "should run the transcoder" do
-        movie = Movie.new("#{fixture_path}/movies/awesome movie.mov")
+        movie = MediaFile.new("#{fixture_path}/movies/awesome movie.mov")
 
         transcoder_double = double(Transcoder)
         Transcoder.should_receive(:new).
@@ -325,7 +325,7 @@ module FFMPEG
 
     describe "screenshot" do
       it "should run the transcoder with screenshot option" do
-        movie = Movie.new("#{fixture_path}/movies/awesome movie.mov")
+        movie = MediaFile.new("#{fixture_path}/movies/awesome movie.mov")
 
         transcoder_double = double(Transcoder)
         Transcoder.should_receive(:new).

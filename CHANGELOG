@@ -16,7 +16,7 @@ Improvements:
   Should be far less cpu and memory dependent (don't spawn a thread for every line of output)
   Timeout spec now passes in Rubinius (using 1.9 mode)
 * Give helpful error message for windows users lacking the win32-process gem (thanks casoetan)
-* Add Movie#container (thanks vitalis)
+* Add MediaFile#container (thanks vitalis)
 * Support vprofile and preset encoding options (thanks vitalis)
 
 Changes:
@@ -39,8 +39,8 @@ New:
 * Bumped target ffmpeg version to 0.11.1
 * Add hung process detection with configurable timeout (thanks stakach)
 * Raise FFMPEG::Error instead of generic RuntimeError on failed transcodings
-* Movie#screenshot for more intuitive screenshotting (README has details)
-* Movie#creation_time and Movie#rotation attributes when metadata is available (thanks Innonate)
+* MediaFile#screenshot for more intuitive screenshotting (README has details)
+* MediaFile#creation_time and MediaFile#rotation attributes when metadata is available (thanks Innonate)
 
 Bugs:
 * Fixed too many open files bug (thanks to akicho8)
@@ -49,7 +49,7 @@ Bugs:
 * Files outputing "could not find codec parameters" are now recognized as invalid
 
 Deprecations:
-* Removed Movie#uncertain_duration?
+* Removed MediaFile#uncertain_duration?
 * Removed all the deprecated crop options (use :custom => '-vf crop=x:x:x:x' if you need it)
 
 Refactorings:
@@ -76,7 +76,7 @@ Refactorings:
 == 0.8.2 2011-08-19
 
 * Path to ffmpeg binary can now be specified (thanks jonathandean)
-* If ffmpeg output contains "is not supported" the Movie will be considered invalid
+* If ffmpeg output contains "is not supported" the MediaFile will be considered invalid
 
 == 0.8.1 2011-07-28
 
@@ -87,7 +87,7 @@ Refactorings:
 
 * Duration is now ALWAYS considered uncertain (we've noticed that ffmpeg is not always correct)
 * This means that the duration check will normally never run (unless you manually hack @uncertain_duration to false)
-* Movie#audio_channels now returns nil if there is no audio stream (instead of crashing)
+* MediaFile#audio_channels now returns nil if there is no audio stream (instead of crashing)
 * Development: Use Bundler
 * Development: Update RSpec to 2.6
 
@@ -97,7 +97,7 @@ Refactorings:
 
 == 0.7.7 2011-02-01
 
-* Movies with starttime are now considered as having uncertain duration as its behavior is not consistent across formats
+* MediaFiles with starttime are now considered as having uncertain duration as its behavior is not consistent across formats
 * Upgrade development environment to RSpec 2.4
 
 == 0.7.6 2011-01-14
@@ -107,7 +107,7 @@ Refactorings:
 == 0.7.5 2011-01-14
 
 * Fixed some ruby 1.9 issues
-* Added Movie#video_bitrate and Movie#audio_bitrate (thanks to mbj)
+* Added MediaFile#video_bitrate and MediaFile#audio_bitrate (thanks to mbj)
 
 == 0.7.4 2010-12-07
 
@@ -153,7 +153,7 @@ Refactorings:
 
 == 0.6.5 2010-05-19
 
-* Movie#size method to get file size.
+* MediaFile#size method to get file size.
 
 == 0.6.4 2010-05-12
 
@@ -165,10 +165,10 @@ Refactorings:
 
 == 0.6.2 2010-05-05
 
-* Added Movie#uncertain_duration? which is true if ffmpeg is guessing duration from bitrate
+* Added MediaFile#uncertain_duration? which is true if ffmpeg is guessing duration from bitrate
 * Skipping the transcoders duration validation if original file has uncertain duration
 * Made sure aspect ratio preservation always rounds new size to an even number to avoid "not divisible by 2" errors
-* Changed Movie#valid? logic to accept any movie with either a readable audio or video stream
+* Changed MediaFile#valid? logic to accept any movie with either a readable audio or video stream
 
 == 0.6.0 2010-05-04
 
@@ -190,7 +190,7 @@ Refactorings:
 
 == 0.4.1 2010-02-10
 
-* Forgot to change the transcoding shortcut from Movie
+* Forgot to change the transcoding shortcut from MediaFile
 
 == 0.4.0 2010-02-10
 
